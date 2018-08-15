@@ -1,7 +1,7 @@
 'use strict';
 const Restify = require('restify');
 const server = Restify.createServer({
-  name: "MoneyBot"
+  name: "bankonme"
 });
 const request = require('request');
 const PORT = process.env.PORT || 3000;
