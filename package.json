@@ -1,7 +1,6 @@
 {
-  "name": "moneybotwebhook",
+  "name": "bankonme",
   "version": "1.0.0",
-  "description": "",
   "scripts": {
     "start": "node webhook.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,6 +9,17 @@
   "license": "ISC",
   "dependencies": {
     "request": "2.79.0",
-    "restify": "4.3.0"
-  }
+    "restify": "4.3.0",
+    "actions-on-google": "1.2.0"
+  },
+  "main": "webhook.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/connectwithmath/bankonme.git"
+  },
+  "bugs": {
+    "url": "https://github.com/connectwithmath/bankonme/issues"
+  },
+  "homepage": "https://github.com/connectwithmath/bankonme#readme",
+  "description": ""
 }
