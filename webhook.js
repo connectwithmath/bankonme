@@ -1,15 +1,17 @@
 'use strict';
 const Restify = require('restify');
 const { dialogflow } = require('actions-on-google');
-
 const server = Restify.createServer({
   name: "bankonme"
 });
+const fs = require('fs');
 const request = require('request');
 const PORT = process.env.PORT || 3000;
 
 server.use(Restify.bodyParser());
 server.use(Restify.jsonp());
+
+
 
 const convertCurrency = (amountToConvert, outputCurrency, cb) => {
   const {amount, currency} = amountToConvert;
@@ -32,23 +34,55 @@ const convertCurrency = (amountToConvert, outputCurrency, cb) => {
 
 }
 
+
 const getInterestRate = (period, unit, cb) => {
   
-  switch(unit){
+    var period_in_days = 0;
+    switch(unit){
       case 'day':
-        cb(null, `For a period of ${period} day(s), the rate of interest is 5%`);
+        period_in_days = period;  
         break;
       case 'mo':
-        cb(null, `For a period of ${period} months(s), the rate of interest is 6%`);
+        period_in_days = period * 30;
         break;
       case 'yr':
-        cb(null, `For a period of ${period} years(s), the rate of interest is 7%`);
+        period_in_days = period * 365;
         break;
       default:
         cb(null, `Please enter the Fixed Deposit term/duration in days, months or years`);
         break;
-  }   
+      }
+    
+    fs.readFile( __dirname + "/" + "interest_rates.json", 'utf8', function (err, data) {
+      
+      if (err) {
+        console.log("error" + err.code);
+      } else {
+        console.log("i am doing just fine");
+      }
+      
+      var rates = JSON.parse( data );
+      var interest_rate = 0;
+      
+      var count = Object.keys(rates).length;
+      const rates_array = Object.keys(rates);
+      
+      for(var i = 0; i < count; i++) {
+      
+        if (period_in_days <= rates_array[i]) {
+          interest_rate = rates[rates_array[i]].interest_rate;
+          break;
+        }
+              
+      }
+      if (interest_rate == 0){
+        cb(null, `For a period of ${period} ${unit}, the rate of interest is not available`);  
+      } else {
+        cb(null, `For a period of ${period} ${unit}, the rate of interest is ${interest_rate}`);
+      }
+   });
 }
+
 
 // POST route handler
 server.post('/', (req, res, next) => {
@@ -56,7 +90,7 @@ server.post('/', (req, res, next) => {
   
   let {queryResult} = req.body;
 
-  //console.log(queryResult);
+  console.log(queryResult);
   
   //Check the intent
   
@@ -104,33 +138,33 @@ server.post('/', (req, res, next) => {
     // his/her location
     if (queryResult.action === 'requestPermission') {
       
-      const app = dialogflow({debug: true});
-          
-      // Create a Dialogflow intent with the `actions_intent_PERMISSION` event
-      app.intent('Nearby ATM Branch', (conv) => {
-        
-        const options = {
-          context: 'To find the nearest branch/ATM near you,',
-          permissions: ['NAME', 'DEVICE_PRECISE_LOCATION'],
-        };
-      });
-      conv.ask(`I am doing good`);
-      conv.ask(new Permission(options));
-            
-      console.log('I am here');
-      let responseText = `Well, Let me find out the nearest branch/ATM!!`;
+      //let result = `Hello, How can I help you?`;
       let respObj = {
-          fulfillmentText: responseText
+       "payload": {
+         "google": {
+           "expectUserResponse": true,
+           "systemIntent": {
+             "intent": "actions.intent.PERMISSION",
+             "data": {
+              "@type": "type.googleapis.com/google.actions.v2.PermissionValueSpec",
+              "optContext": "To find a branch near you",
+              "permissions": [
+                "NAME",
+                "DEVICE_PRECISE_LOCATION"
+               ]
+             }
+            }
+          }
+        }
       }
       res.json(respObj);
-      //app.askForPermission('To locate you', app.SupportedPermissions.DEVICE_PRECISE_LOCATION);
-      //app.askForPermission('To find the closest ATM or branch', app.SupportedPermissions.DEVICE_PRECISE_LOCATION);
-			
     }
     
     //Once the permission is obtained, find the location of user device
-    if (queryResult.action === 'nearbyATMBranch') {
-    
+    if (queryResult.action === 'checkPermission') {
+      //let params = queryResult.parameters.period;
+      //console.log(params.arguments.textValue);
+      console.log("Hi I am checkPermission");
     }
     
     //Action is to check interest rate
@@ -141,8 +175,31 @@ server.post('/', (req, res, next) => {
       getInterestRate(params.amount, params.unit, (error, result) => {
         if(!error && result) {
           console.log(result);
+          result = result + '\n' + 'Would you like to check the rate for another period?';
           let respObj = {
-            fulfillmentText: result
+            fulfillmentText: result,
+            "payload": {
+              "google": {
+                "expectUserResponse": true,
+                "richResponse": {
+                  "items": [
+                    {
+                      "simpleResponse": {
+                        "textToSpeech": result
+                      }
+                    }
+                  ],
+                  "suggestions": [
+                    {
+                      "title": "Yes please"
+                    },
+                    {
+                      "title": "No thanks"
+                    }
+                  ]
+                }
+              }
+            }
           }
           res.json(respObj);
         }
@@ -170,10 +227,37 @@ server.post('/', (req, res, next) => {
         
         convertCurrency(amountToConvert, outputCurrency, (error, result) => {
           if(!error && result) {
+            console.log(result);
+            result = result + '\n' + 'Would you like to check another amount?';
             let respObj = {
-              fulfillmentText: result
+              fulfillmentText: result,
+              "payload": {
+              "google": {
+                "expectUserResponse": true,
+                "richResponse": {
+                  "items": [
+                    {
+                      "simpleResponse": {
+                        "textToSpeech": result
+                      }
+                    }
+                  ],
+                  "suggestions": [
+                    {
+                      "title": "Yes please"
+                    },
+                    {
+                      "title": "No thanks"
+                    }
+                  ]
+                }
+              }
+              }
             }
+            let contextStr = '[{"name": "interest_rate_query_context", "lifespan":0, "parameters":{}}]';
+            let contextObj = JSON.parse(contextStr);
             res.json(respObj);
+            res.contextOut(contextObj);
           }
         });
       }
