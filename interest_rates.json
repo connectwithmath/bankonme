@@ -1,0 +1,36 @@
+{
+    "6" : {
+        "interest_rate" : "0%"
+    },
+    "14" : {
+        "interest_rate" : "4%"
+    },
+    "29" : {
+        "interest_rate" : "4.25%"
+    },
+    "45" : {
+        "interest_rate" : "5.5%"
+    },
+    "60" : {
+        "interest_rate" : "5.75%"
+    },
+    "184" : {
+        "interest_rate" : "6%"
+    },
+    "289" : {
+        "interest_rate" : "6.25%"
+    },
+    "364" : {
+        "interest_rate" : "6.5%"
+    },
+    "730" : {
+        "interest_rate" : "6.75%"
+    },
+    "1825" : {
+        "interest_rate" : "6.5%"
+    },
+    "3650" : {
+        "interest_rate" : "6.5%"
+    }
+    
+}
