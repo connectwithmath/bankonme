@@ -8,9 +8,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "actions-on-google": "1.2.0",
+    "actions-on-google": "^1.2.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "jsonp": "^0.2.1",
     "permission": "^1.1.0",
-    "request": "2.79.0",
+    "request": "^2.79.0",
     "restify": "4.3.0"
   },
   "main": "webhook.js",
@@ -24,3 +27,4 @@
   "homepage": "https://github.com/connectwithmath/bankonme#readme",
   "description": ""
 }
+
