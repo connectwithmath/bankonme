@@ -232,7 +232,12 @@ server.post('/',function(req,res){
           if (tran_counter === tran_len && account_counter === len) {
             console.log(tran_arr.toString());            
             let respObj = {
-              fulfillmentText: tran_arr.join(" ") + '\n' + 'What else can I do for you?' + '\n' + 'For currency conversion rates, type Currency Conversion',
+              fulfillmentText: tran_arr.join(" ") + '\n' + 'What else can I do for you?' + '\n' + 
+              'For interest rate query, type Interest rates query' + '\n' + 
+              'For currency conversion rates, type Currency Conversion' + '\n' + 
+              'For making a payment to someone, type Make Payment' + '\n'+
+              'To check account balance, type Account Balance' + '\n' +
+              'To check your previous transactions, type Last few transactions' + '\n', 
               "payload": {
                 "google": {
                   "expectUserResponse": true,
@@ -326,7 +331,12 @@ server.post('/',function(req,res){
             //console.log("I am sending result");
             
             let respObj = {
-              fulfillmentText: result_arr.join(" ") + '\n' + 'What else can I do for you?',
+              fulfillmentText: result_arr.join(" ") + '\n' + 'What else can I do for you?' + '\n' + 
+              'For interest rate query, type Interest rates query' + '\n' + 
+              'For currency conversion rates, type Currency Conversion' + '\n' + 
+              'For making a payment to someone, type Make Payment' + '\n'+
+              'To check account balance, type Account Balance' + '\n' +
+              'To check your previous transactions, type Last few transactions' + '\n', 
               "payload": {
                 "google": {
                   "expectUserResponse": true,
@@ -430,7 +440,13 @@ server.post('/',function(req,res){
       console.log("Body " , body);
       
       if (queryResult.action === 'pay_someone' && statusCode === 201) {
-        let result = "Your payment of " + tran_ccy + " " + tran_amt + " to " + tran_payee + " is completed successfully. Payment has been made from account " + account_id + '\n' ;
+        let result = "Your payment of " + tran_ccy + " " + tran_amt + " to " + tran_payee + " is completed successfully. Payment has been made from account " + account_id + '\n' 
+        + 'What else can I do for you?' + '\n' + 
+              'For interest rate query, type Interest rates query' + '\n' + 
+              'For currency conversion rates, type Currency Conversion' + '\n' + 
+              'For making a payment to someone, type Make Payment' + '\n'+
+              'To check account balance, type Account Balance' + '\n' +
+              'To check your previous transactions, type Last few transactions' + '\n' ;
 
         let respObj = {
           fulfillmentText: result,
@@ -476,7 +492,13 @@ server.post('/',function(req,res){
   //Check actions
   if (queryResult.action === 'input.welcome') {
     console.log('Inside welcome');
-    let result = `\n Hello, How can I help you? + "\n" + To check account balance, type account balance.` +  "\n" + `To check last 5 transactions, type last few transactions`;
+    let result = `\n  + 'What else can I do for you?' + '\n' + 
+    'For interest rate query, type Interest rates query' + '\n' + 
+    'For currency conversion rates, type Currency Conversion' + '\n' + 
+    'For making a payment to someone, type Make Payment' + '\n'+
+    'To check account balance, type Account Balance' + '\n' +
+    'To check your previous transactions, type Last few transactions' + '\n'`,
+    
     let respObj = {
           fulfillmentText: result,
           "payload": {
