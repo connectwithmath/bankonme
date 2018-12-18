@@ -232,7 +232,7 @@ server.post('/',function(req,res){
           if (tran_counter === tran_len && account_counter === len) {
             console.log(tran_arr.toString());            
             let respObj = {
-              fulfillmentText: tran_arr.join(" ") + '\n' + 'What else can I do for you?',
+              fulfillmentText: tran_arr.join(" ") + '\n' + 'What else can I do for you?' + '\n' + 'For currency conversion rates, type Currency Conversion',
               "payload": {
                 "google": {
                   "expectUserResponse": true,
@@ -241,7 +241,7 @@ server.post('/',function(req,res){
                       {
                         "simpleResponse": {
                           "textToSpeech": tran_arr.join(" ") + '\n' + 'What else can I do for you?',
-                          "displayText": tran_arr.join(" ") + '\n' + 'What else can I do for you?'
+                          "displayText": tran_arr.join(" ") + '\n' + 'What else can I do for you?' 
                         }
                       }
                     ],
