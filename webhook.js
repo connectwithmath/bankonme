@@ -440,8 +440,7 @@ server.post('/',function(req,res){
       console.log("Body " , body);
       
       if (queryResult.action === 'pay_someone' && statusCode === 201) {
-        let result = "Your payment of " + tran_ccy + " " + tran_amt + " to " + tran_payee + " is completed successfully. Payment has been made from account " + account_id + '\n' 
-        + 'What else can I do for you?' + '\n' + 
+        let result = "Your payment of " + tran_ccy + " " + tran_amt + " to " + tran_payee + " is completed successfully. Payment has been made from account " + account_id + '\n' + 'What else can I do for you?' + '\n' + 
               'For interest rate query, type Interest rates query' + '\n' + 
               'For currency conversion rates, type Currency Conversion' + '\n' + 
               'For making a payment to someone, type Make Payment' + '\n'+
@@ -497,8 +496,8 @@ server.post('/',function(req,res){
     'For currency conversion rates, type Currency Conversion' + '\n' + 
     'For making a payment to someone, type Make Payment' + '\n'+
     'To check account balance, type Account Balance' + '\n' +
-    'To check your previous transactions, type Last few transactions' + '\n'`,
-    
+    'To check your previous transactions, type Last few transactions' + '\n'`;
+
     let respObj = {
           fulfillmentText: result,
           "payload": {
