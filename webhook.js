@@ -476,7 +476,7 @@ server.post('/',function(req,res){
   //Check actions
   if (queryResult.action === 'input.welcome') {
     console.log('Inside welcome');
-    let result = `\n Hello, How can I help you? To check account balance, type account balance.  To check last 5 transactions, type last few transactions`;
+    let result = `\n Hello, How can I help you? \n To check account balance, type account balance.  \n To check last 5 transactions, type last few transactions`;
     let respObj = {
           fulfillmentText: result,
           "payload": {
