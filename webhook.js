@@ -491,12 +491,12 @@ server.post('/',function(req,res){
   //Check actions
   if (queryResult.action === 'input.welcome') {
     console.log('Inside welcome');
-    let result = `\n  + 'What else can I do for you?' + '\n' + 
-    'For interest rate query, type Interest rates query' + '\n' + 
-    'For currency conversion rates, type Currency Conversion' + '\n' + 
-    'For making a payment to someone, type Make Payment' + '\n'+
-    'To check account balance, type Account Balance' + '\n' +
-    'To check your previous transactions, type Last few transactions' + '\n'`;
+    let result = `\n  How can I help you? \n  
+    For interest rate query, type Interest rates query \n
+    For currency conversion rates, type Currency Conversion \n 
+    For making a payment to someone, type Make Payment \n
+    To check account balance, type Account Balance \n 
+    To check your previous transactions, type Last few transactions + \n`;
 
     let respObj = {
           fulfillmentText: result,
